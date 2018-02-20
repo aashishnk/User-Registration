@@ -21,7 +21,7 @@ public class UserDAOImpl implements UserDAO {
 	@Override
 	public void saveNewUser(User theUser) {
 		
-		Session currentSession = sessionFactory.getCurrentSession();
+		Session currentSession = sessionFactory.getCurrentSession();//creating a session object
 
 		currentSession.save(theUser);
 
