@@ -28,7 +28,7 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public List<User> getUserData(String mailId) {
+	public List<User> getUserData(String mailId) {	//method to get user details by using User Mail Id
 
 		Session currentSession = sessionFactory.getCurrentSession();
 		
