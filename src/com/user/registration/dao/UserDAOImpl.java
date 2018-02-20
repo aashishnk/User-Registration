@@ -16,12 +16,12 @@ import com.user.registration.entity.User;
 public class UserDAOImpl implements UserDAO {
 	
 	@Autowired
-	private SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;// declaring a session object
 
 	@Override
 	public void saveNewUser(User theUser) {
 		
-		Session currentSession = sessionFactory.getCurrentSession();//creating a session object
+		Session currentSession = sessionFactory.getCurrentSession();
 
 		currentSession.save(theUser);
 
