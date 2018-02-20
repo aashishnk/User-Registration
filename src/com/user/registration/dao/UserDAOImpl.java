@@ -1,13 +1,11 @@
 package com.user.registration.dao;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import com.user.registration.entity.User;
@@ -32,16 +30,13 @@ public class UserDAOImpl implements UserDAO {
 
 		Session currentSession = sessionFactory.getCurrentSession();
 		
-		Query<User> query = currentSession.createSQLQuery("select * from user_data u where u.email_id=:mailId")
-				.addEntity(User.class)
+		Query<User> query = currentSession.createNativeQuery("select * from user_data u where u.email_id=:mailId",User.class)
 				.setParameter("mailId", mailId);
-		
-		List<User> userData =  query.getResultList();
 		
 		//long s = ((long) currentSession.createQuery("select count(*) from User where emailId=:mailId").setParameter("mailId", mailId).iterate().next() );
 		
 		
-		return userData;
+		return query.getResultList();
 	}
 
 	@Override

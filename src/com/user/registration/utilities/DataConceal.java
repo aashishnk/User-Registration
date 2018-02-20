@@ -1,6 +1,4 @@
-package UserUtilities;
-
-import java.io.UnsupportedEncodingException;
+package com.user.registration.utilities;
 
 import javax.xml.bind.DatatypeConverter;
 

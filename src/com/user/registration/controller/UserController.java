@@ -3,8 +3,6 @@ package com.user.registration.controller;
 import java.util.List;
 
 import org.apache.velocity.app.VelocityEngine;
-import org.apache.velocity.exception.ParseErrorException;
-import org.apache.velocity.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,11 +18,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import UserUtilities.DataConceal;
-import UserUtilities.UserMailVerificationLink;
-
 import com.user.registration.entity.User;
 import com.user.registration.service.UserService;
+import com.user.registration.utilities.DataConceal;
+import com.user.registration.utilities.UserMailVerificationLink;
 
 
 @Controller
@@ -39,6 +36,10 @@ public class UserController {
 	@Autowired
 	private VelocityEngine velocityEngine;
 	
+	String errorConfirmationLinkPage ="errorConfirmationLinkPage";
+	String homescreen ="home-screen";
+	String errorMessage = "errorMessage";
+	
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		
@@ -50,22 +51,20 @@ public class UserController {
 	@RequestMapping("/Homepage")
 	public String homeScreen(@ModelAttribute("user") User theUser) {
 		
-		return "home-screen";
+		return homescreen;
 	}
 	
 	@PostMapping("/userLogin")
 	public String userLoginPage(@Validated(User.userLoginPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult, Model theModell) {
 				
 		if (theBindingResult.hasErrors()) {
-			return "home-screen";
+			return homescreen;
 		}
 		
-		//System.out.println(theUser.getEmailId()+"-->"+ theUser.getPassword());
 		
 		if(! userService.userLogin(theUser.getEmailId(), theUser.getPassword())) {
-			System.out.println("Wrong EmailId/Password combination");
 			theModell.addAttribute("loginErrorMessage", "Wrong EmailId/Password combination");
-			return "home-screen";
+			return homescreen;
 		}
 		
 		return "login-page";
@@ -79,9 +78,8 @@ public class UserController {
 	}
 	
 	@RequestMapping("/RegisterUser")
-	public String saveNewUser(@Validated(User.userRegistrationPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult) throws ResourceNotFoundException, ParseErrorException, Exception {
+	public String saveNewUser(@Validated(User.userRegistrationPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult) throws Exception {
 		
-		System.out.println(theBindingResult);
 		if (theBindingResult.hasErrors()) {
 			return "user-registration";
 		}
@@ -99,28 +97,28 @@ public class UserController {
 		
 		
 		if(mailData == null){
-			theModel.addAttribute("errorMessage", "You have used error/bad link for conforming your account.");
-			return "errorConfirmationLinkPage";
+			theModel.addAttribute(errorMessage, "You have used error/bad link for conforming your account.");
+			return errorConfirmationLinkPage;
 		}
 		
 		DataConceal dataDecode = new DataConceal();
 		List<User> userData = userService.verifyNewUser(dataDecode.dataDecode(mailData));
 		
-		if(userData.size() == 0) {
+		if( userData.isEmpty() ) { 
 			
 			//User has used bad or wrong link.
-			theModel.addAttribute("errorMessage", "You have used error/bad link for conforming your account.");
+			theModel.addAttribute(errorMessage, "You have used error/bad link for conforming your account.");
 			
-			return "errorConfirmationLinkPage";
+			return errorConfirmationLinkPage;
 		}
 		else if(/*userData.get(0).getActiveFlag() == 1 && */userData.get(0).getStatus() == 1) {
 			
 			//User is already activated
-			theModel.addAttribute("errorMessage", userData.get(0).getFirstName()+
+			theModel.addAttribute(errorMessage, userData.get(0).getFirstName()+
 					", you have already confirmed your account on ");
 			theModel.addAttribute("confirmedTime",userData.get(0).getUpdatedDate());
 			
-			return "errorConfirmationLinkPage";
+			return errorConfirmationLinkPage;
 		}
 		
 		theModel.addAttribute("userData", userData.get(0).getFirstName());
