@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.user.registration.entity.User;
+import com.user.registration.entity.User.UserLoginPage;
+import com.user.registration.entity.User.UserRegistrationPage;
 import com.user.registration.service.UserService;
 import com.user.registration.utilities.DataConceal;
 import com.user.registration.utilities.UserMailVerificationLink;
@@ -55,7 +57,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/userLogin")
-	public String userLoginPage(@Validated(User.UserLoginPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult, Model theModell) {
+	public String userLoginPage(@Validated(UserLoginPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult, Model theModell) {
 				
 		if (theBindingResult.hasErrors()) {
 			return homescreen;
@@ -78,7 +80,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("/RegisterUser")
-	public String saveNewUser(@Validated(User.UserRegistrationPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult) throws Exception {
+	public String saveNewUser(@Validated(UserRegistrationPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult) throws Exception {
 		
 		if (theBindingResult.hasErrors()) {
 			return "user-registration";
