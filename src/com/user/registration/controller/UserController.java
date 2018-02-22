@@ -55,7 +55,7 @@ public class UserController {
 	}
 	
 	@PostMapping("/userLogin")
-	public String userLoginPage(@Validated(User.userLoginPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult, Model theModell) {
+	public String userLoginPage(@Validated(User.UserLoginPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult, Model theModell) {
 				
 		if (theBindingResult.hasErrors()) {
 			return homescreen;
@@ -78,7 +78,7 @@ public class UserController {
 	}
 	
 	@RequestMapping("/RegisterUser")
-	public String saveNewUser(@Validated(User.userRegistrationPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult) throws Exception {
+	public String saveNewUser(@Validated(User.UserRegistrationPage.class) @ModelAttribute("user") User theUser, BindingResult theBindingResult) throws Exception {
 		
 		if (theBindingResult.hasErrors()) {
 			return "user-registration";

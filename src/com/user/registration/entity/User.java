@@ -24,10 +24,10 @@ import com.user.registration.validations.UniqueMailId;
 @Table(name="user_data")
 public class User {
 	
-	public interface userLoginPage{		
+	public interface UserLoginPage{		
 	}
 	
-	public interface userRegistrationPage{		
+	public interface UserRegistrationPage{		
 	}
 
 	
@@ -37,29 +37,29 @@ public class User {
 	@Column(name="user_id")
 	private int userId;
 	
-	@NotNull(message="is requiered", groups = {userRegistrationPage.class})
-	@Pattern(regexp="[a-zA-z]+",message="Please enter a valid name", groups = {userRegistrationPage.class})
+	@NotNull(message="is requiered", groups = {UserRegistrationPage.class})
+	@Pattern(regexp="[a-zA-z]+",message="Please enter a valid name", groups = {UserRegistrationPage.class})
 	@Column(name="first_name")
 	private String firstName;
 	
-	@NotNull(message="is requiered", groups = {userRegistrationPage.class})
-	@Pattern(regexp="[a-zA-z]+",message="Please enter a valid name", groups = {userRegistrationPage.class})
+	@NotNull(message="is requiered", groups = {UserRegistrationPage.class})
+	@Pattern(regexp="[a-zA-z]+",message="Please enter a valid name", groups = {UserRegistrationPage.class})
 	@Column(name="last_name")
 	private String lastName;
 	
-	@NotNull(message="is requiered", groups = {userLoginPage.class, userRegistrationPage.class})
-	@Pattern(regexp="[a-zA-Z0-9_]+@{1}[a-zA-Z]+.{1}[a-zA-Z]+.?[a-zA-Z]*",groups = {userLoginPage.class, userRegistrationPage.class}, message="Enter Mail-ID in Correct format")
-	@UniqueMailId(groups = {userRegistrationPage.class})
+	@NotNull(message="is requiered", groups = {UserLoginPage.class, UserRegistrationPage.class})
+	@Pattern(regexp="[a-zA-Z0-9_]+@{1}[a-zA-Z]+.{1}[a-zA-Z]+.?[a-zA-Z]*",groups = {UserLoginPage.class, UserRegistrationPage.class}, message="Enter Mail-ID in Correct format")
+	@UniqueMailId(groups = {UserRegistrationPage.class})
 	@Column(name="email_id")
 	private String emailId;
 	
-	@NotNull(message="is requiered", groups = {userLoginPage.class, userRegistrationPage.class})
-	@Size(min=3,max=8, message="Password length must be 3-8 characters", groups = {userLoginPage.class, userRegistrationPage.class})
+	@NotNull(message="is requiered", groups = {UserLoginPage.class, UserRegistrationPage.class})
+	@Size(min=3,max=8, message="Password length must be 3-8 characters", groups = {UserLoginPage.class, UserRegistrationPage.class})
 	@Column(name="password")
 	private String password;
 	
-	@Pattern(regexp="[0-9-]+",message="Please enter valid phone number", groups = {userRegistrationPage.class})
-	@Size(min=6,max=10, message="Contact number must be 6-10 digits", groups = {userRegistrationPage.class})
+	@Pattern(regexp="[0-9-]+",message="Please enter valid phone number", groups = {UserRegistrationPage.class})
+	@Size(min=6,max=10, message="Contact number must be 6-10 digits", groups = {UserRegistrationPage.class})
 	@Column(name="contact_number")
 	private String contactNumber;
 	
@@ -81,6 +81,8 @@ public class User {
 	
 	public User() {
 		
+		/*It is a default constructor written to help in creation of
+		 	no parameterized object in case of paresence of a parameterized constructor*/
 	}
 
 	public int getUserId() {

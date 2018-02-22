@@ -19,9 +19,9 @@ public class UserMailVerificationLink {
 	public void userMailLink(User userData, JavaMailSender mailSender, VelocityEngine velocityEngine) throws Exception{
 		
 		String recipientAddress = userData.getEmailId();
-		String first_name = userData.getFirstName();
-		String last_name = userData.getLastName();
-		String app_name = "Spring local User Registration";
+		String firstName = userData.getFirstName();
+		String lastName = userData.getLastName();
+		String appName = "Spring local User Registration";
 		
 		DataConceal dataConceal = new DataConceal();
 		String encodeData = dataConceal.dataEncode(recipientAddress);
@@ -36,9 +36,9 @@ public class UserMailVerificationLink {
         Template template = velocityEngine.getTemplate("./Mail_Templates/testMail.html");
         VelocityContext velocityContext = new VelocityContext();
         
-        velocityContext.put("app_name", app_name);
-        velocityContext.put("first_name", first_name);
-        velocityContext.put("last_name", last_name);
+        velocityContext.put("app_name", appName);
+        velocityContext.put("first_name", firstName);
+        velocityContext.put("last_name", lastName);
         velocityContext.put("link", link);
         
         StringWriter stringWriter = new StringWriter();

@@ -6,7 +6,6 @@ import javax.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.user.registration.service.UserService;
-import com.user.registration.service.UserServiceImpl;
 
 
 public class UniqueUserMailIdValidator implements ConstraintValidator<UniqueMailId, String>{
@@ -15,7 +14,8 @@ public class UniqueUserMailIdValidator implements ConstraintValidator<UniqueMail
 	private UserService userService;
 	
 	@Override
-	public void initialize(UniqueMailId mailId) {
+	public void initialize(UniqueMailId mailId) { 
+		/*At validation statement, no input is required so this method is empty*/
 
 	}
 
@@ -26,14 +26,8 @@ public class UniqueUserMailIdValidator implements ConstraintValidator<UniqueMail
 			return true;
 		}
 		
-		System.out.println("Validation Mail Id = "+mailId);
+		return userService.uniqueUserMailId(mailId);
 		
-		if((userService.uniqueUserMailId(mailId))) {
-			
-			return false;
-		}
-		
-		return true;
 	}
 
 }

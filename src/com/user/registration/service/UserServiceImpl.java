@@ -29,13 +29,11 @@ public class UserServiceImpl implements UserService {
 
 		List<User> newUserList = userDao.getUserData(mailId);
 		
-		if (newUserList.size()==1) {
-			if(newUserList.get(0).getActiveFlag() == 0 && newUserList.get(0).getStatus() == 0) {
-				
-				//Activate the user & display the link to login page
-				userDao.updateUserStatus(mailId, 1, 1);
+		if (newUserList.size()==1 && newUserList.get(0).getActiveFlag() == 0 && newUserList.get(0).getStatus() == 0) {
+			//Activate the user & display the link to login page
+			userDao.updateUserStatus(mailId, 1, 1);
 			}
-		}
+		
 	return newUserList;
 	}
 
@@ -44,11 +42,9 @@ public class UserServiceImpl implements UserService {
 	public boolean userLogin(String mailId, String password) {
 		
 		List<User> userData = userDao.getUserData(mailId);
-		if(userData.size() == 1) {
-			
-			if(userData.get(0).getPassword().equals(password) && userData.get(0).getStatus() == 1) {
-				return true;
-			}
+		if(userData.size() == 1 && userData.get(0).getPassword().equals(password) && userData.get(0).getStatus() == 1) {
+				
+			return true;
 		}
 		
 	return false;	
@@ -60,11 +56,7 @@ public class UserServiceImpl implements UserService {
 		
 		List<User> userData = userDao.getUserData(mailId);
 		
-		/*if(userData.size() == 1) {
-			return false;
-		}*/
-		
-		return userData.size() == 1;
+		return userData.isEmpty();
 	}
 
 }
