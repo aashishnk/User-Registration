@@ -7,6 +7,7 @@ import javax.mail.internet.MimeMessage;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,12 @@ import com.user.registration.entity.User;
 
 @Component
 public class UserMailVerificationLink {
+	
+	@Autowired
+	private JavaMailSender mailSender2;
+	
+	@Autowired
+	private VelocityEngine velocityEngine2;
 	
 	public void userMailLink(User userData, JavaMailSender mailSender, VelocityEngine velocityEngine) throws Exception{
 		

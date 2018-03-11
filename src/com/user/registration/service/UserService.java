@@ -10,7 +10,7 @@ public interface UserService {
 	
 	public List<User> verifyNewUser(String mailId);
 	
-	public boolean userLogin(String mailId, String password);
+	public List<User> userLogin(User theUser);
 	
 	public boolean uniqueUserMailId(String mailId);
 

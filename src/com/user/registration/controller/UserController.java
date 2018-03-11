@@ -2,10 +2,8 @@ package com.user.registration.controller;
 
 import java.util.List;
 
-import org.apache.velocity.app.VelocityEngine;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.StringTrimmerEditor;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,7 +21,7 @@ import com.user.registration.entity.User.UserLoginPage;
 import com.user.registration.entity.User.UserRegistrationPage;
 import com.user.registration.service.UserService;
 import com.user.registration.utilities.DataConceal;
-import com.user.registration.utilities.UserMailVerificationLink;
+import com.user.registration.utilities.UserMessages;
 
 
 @Controller
@@ -32,11 +30,7 @@ public class UserController {
 	@Autowired
 	UserService userService;
 	
-	@Autowired
-	private JavaMailSender mailSender;
-	
-	@Autowired
-	private VelocityEngine velocityEngine;
+	UserMessages userMsg = new UserMessages();
 	
 	String errorConfirmationLinkPage ="errorConfirmationLinkPage";
 	String homescreen ="home-screen";
@@ -63,9 +57,20 @@ public class UserController {
 			return homescreen;
 		}
 		
+		List<User> userData = userService.userLogin(theUser);
 		
-		if(! userService.userLogin(theUser.getEmailId(), theUser.getPassword())) {
-			theModell.addAttribute("loginErrorMessage", "Wrong EmailId/Password combination");
+		if(userData.size() == 1) {
+		
+			if( ! ( userData.get(0).getPassword().equals(theUser.getPassword()) && 
+					userData.get(0).getStatus() == 1 && userData.get(0).getActiveFlag() == 1 ) ) {
+				
+				theModell.addAttribute("loginErrorMessage", 
+						userMsg.userLoginErrorMessage(userData.get(0),theUser.getPassword()));
+				return homescreen;
+			}
+		}
+		else {
+			theModell.addAttribute("loginErrorMessage", userMsg.userLoginErrorMessage(null,theUser.getPassword()));
 			return homescreen;
 		}
 		
@@ -85,9 +90,6 @@ public class UserController {
 		if (theBindingResult.hasErrors()) {
 			return "user-registration";
 		}
-		
-		UserMailVerificationLink accntMailVerify = new UserMailVerificationLink();
-		accntMailVerify.userMailLink(theUser, mailSender,velocityEngine);
 		
 		userService.saveNewUser(theUser);
 		

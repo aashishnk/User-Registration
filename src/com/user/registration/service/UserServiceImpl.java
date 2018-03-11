@@ -39,15 +39,10 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean userLogin(String mailId, String password) {
+	public List<User> userLogin(User theUser) {
 		
-		List<User> userData = userDao.getUserData(mailId);
-		if(userData.size() == 1 && userData.get(0).getPassword().equals(password) && userData.get(0).getStatus() == 1) {
-				
-			return true;
-		}
-		
-	return false;	
+		System.out.println("userLogin method returned Successfully");
+		return userDao.getUserData(theUser.getEmailId());	
 	}
 
 	@Override
